@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite verbose="0" name="Failed suite [Amazon test Suite]">
+  <test name="Amazon test(failed)">
+    <classes>
+      <class name="AmazonTest">
+        <methods>
+          <include name="addToCartLoginRequired"/>
+          <include name="openWebPageInBrowser"/>
+          <include name="closeBrowser"/>
+          <include name="selectPendriveLowestPrice"/>
+        </methods>
+      </class> <!-- AmazonTest -->
+    </classes>
+  </test> <!-- Amazon test(failed) -->
+</suite> <!-- Failed suite [Amazon test Suite] -->

@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: TestSuite
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 22.556 s <<< FAILURE! - in TestSuite
+selectPendriveLowestPrice(AmazonTest)  Time elapsed: 0.124 s  <<< FAILURE!
+java.lang.NumberFormatException: empty String
+	at AmazonTest.selectPendriveLowestPrice(AmazonTest.java:73)
+
+addToCartLoginRequired(AmazonTest)  Time elapsed: 0.013 s  <<< FAILURE!
+java.util.NoSuchElementException
+	at AmazonTest.addToCartLoginRequired(AmazonTest.java:112)
+

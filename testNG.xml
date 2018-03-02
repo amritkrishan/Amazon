@@ -1,0 +1,9 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<suite name = "Amazon test Suite">
+    <test name = "Amazon test">
+        <classes>
+            <class name = "AmazonTest" />
+        </classes>
+    </test>
+</suite>
