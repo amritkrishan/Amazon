@@ -131,8 +131,8 @@ public class AmazonTest {
         Assert.assertFalse(continueButton==null,"Continue button not as expected");
     }
 
-    /*@AfterClass
+    @AfterClass
     public void closeBrowser(){
         driver.quit();
-    }*/
+    }
 }
