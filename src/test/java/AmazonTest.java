@@ -9,6 +9,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +22,10 @@ public class AmazonTest {
 
     @BeforeClass
     public void openWebPageInBrowser(){
+
+        Path workspacePath = Paths.get(System.getProperty("user.dir"),"chromedriver.exe");
+        File file = new File(workspacePath.toString());
+        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
         driver = new ChromeDriver();
         driver.get("http://www.amazon.in");
         driver.manage().window().maximize();
@@ -62,7 +69,7 @@ public class AmazonTest {
     public void selectPendriveLowestPrice() throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
         List<WebElement> allPrices=driver.findElements(By .xpath("//span[@class='a-size-base a-color-price s-price a-text-bold']"));
-        Thread.sleep(2000);
+        Thread.sleep(10000);
         List<Double> listPrices=new LinkedList<Double>();
         for(WebElement price: allPrices){
             String temp=price.getText();
