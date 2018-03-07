@@ -1,0 +1,5 @@
+"TC_001,Open Page in Browser,Pass"
+"TC_002,Enter Search Text,Pass"
+"TC_003,Filter By Brand,Pass"
+"TC_006,Select lowest Price Pen Drive,Pass"
+"TC_007,Add to cart and validate login needed to checkout,Pass"
