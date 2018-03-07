@@ -9,6 +9,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +22,10 @@ public class AmazonTest {
 
     @BeforeClass
     public void openWebPageInBrowser(){
+
+        Path workspacePath = Paths.get(System.getProperty("user.dir"),"chromedriver.exe");
+        File file = new File(workspacePath.toString());
+        System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
         driver = new ChromeDriver();
         driver.get("http://www.amazon.in");
         driver.manage().window().maximize();
