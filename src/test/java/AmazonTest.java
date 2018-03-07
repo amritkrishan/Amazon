@@ -62,7 +62,7 @@ public class AmazonTest {
     public void selectPendriveLowestPrice() throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
         List<WebElement> allPrices=driver.findElements(By .xpath("//span[@class='a-size-base a-color-price s-price a-text-bold']"));
-        Thread.sleep(2000);
+        Thread.sleep(10000);
         List<Double> listPrices=new LinkedList<Double>();
         for(WebElement price: allPrices){
             String temp=price.getText();
