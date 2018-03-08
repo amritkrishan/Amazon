@@ -53,9 +53,10 @@ public class AmazonTest {
     }
 
     @Test(priority = 0)
-    public void enterSearchText() throws IOException {
+    public void enterSearchText() throws Exception {
         WebElement searchBox = driver.findElement(By.xpath("//input[@id='twotabsearchtextbox']"));
-        searchBox.sendKeys("pen drive");
+        String searchText=readTestData("SearchText");
+        searchBox.sendKeys(searchText);
         WebElement searchButton = driver.findElement(By.xpath("//input[@value='Go']"));
         searchButton.click();
         boolean result = driver.getTitle().equals("Amazon.in: pen drive - Pen Drives / External Devices & Data Storage: Computers & Accessories");
@@ -84,11 +85,11 @@ public class AmazonTest {
     public void filterPendriveByPrice() throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         WebElement filterMinPrice = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='low-price' and @placeholder='Min']")));
-        //String minPrice=readTestData("FilterMinPrice").toString();
-        //String maxPrice=readTestData("FilterMaxPrice").toString();
-        filterMinPrice.sendKeys("300");
+        String minPrice=readTestData("FilterMinPrice");
+        String maxPrice=readTestData("FilterMaxPrice");
+        filterMinPrice.sendKeys(minPrice);
         WebElement filterMaxPrice = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='high-price' and @placeholder='Max']")));
-        filterMaxPrice.sendKeys("1000");
+        filterMaxPrice.sendKeys(maxPrice);
         WebElement goButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@class='a-button-input' and @value='Go']")));
         goButton.click();
         CsvWriter output = new CsvWriter(new FileWriter(outputFile, true), ',');
@@ -110,55 +111,61 @@ public class AmazonTest {
     }
 
     @Test(priority = 4)
-    public void selectPendriveLowestPrice() throws IOException {
+    public void selectPendriveLowestPrice() throws IOException, InterruptedException {
         List<WebElement> allPrices = driver.findElements(By.xpath("//span[@class='a-size-base a-color-price s-price a-text-bold']"));
-        LinkedList<Double> listPrices = new LinkedList<Double>();
-        for (int i = 0; i < allPrices.size(); i++) {
-            try {
-                String temp = allPrices.get(i).getText();
-                temp = temp.replaceAll(",", "");
-                if (temp.equals("") == false) {
-                    double value = Double.parseDouble(temp);
-                    listPrices.add(value);
+        Thread.sleep(5000);
+        try {
+            LinkedList<Double> listPrices = new LinkedList<Double>();
+            for (int i = 0; i < allPrices.size(); i++) {
+                try {
+                    String temp = allPrices.get(i).getText();
+                    temp = temp.replaceAll(",", "");
+                    if (temp.equals("") == false) {
+                        double value = Double.parseDouble(temp);
+                        listPrices.add(value);
+                    }
+                } catch (org.openqa.selenium.StaleElementReferenceException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (org.openqa.selenium.StaleElementReferenceException ex) {
-                ex.printStackTrace();
             }
-        }
-        double min = listPrices.get(0);
-        for (double listPrice : listPrices) {
-            if (listPrice < min) {
-                min = listPrice;
+            double min = listPrices.get(0);
+            for (double listPrice : listPrices) {
+                if (listPrice < min) {
+                    min = listPrice;
+                }
             }
-        }
-        String lowestPrice = String.valueOf(min);
-        if (lowestPrice.endsWith(".0")) {
-            lowestPrice = lowestPrice.substring(0, lowestPrice.length() - 2);
-        }
+            String lowestPrice = String.valueOf(min);
+            if (lowestPrice.endsWith(".0")) {
+                lowestPrice = lowestPrice.substring(0, lowestPrice.length() - 2);
+            }
 
-        //Decimal Handling
-        if (lowestPrice.contains(".")) {
-            int indexOfDecimal = lowestPrice.indexOf('.');
-            String rupee = lowestPrice.substring(0, indexOfDecimal);
-            String paisa = lowestPrice.substring(indexOfDecimal + 1);
-            if (rupee.length() > 3 && rupee.length() <= 5) {
-                rupee = rupee.substring(0, rupee.length() - 3) + "," + rupee.substring(rupee.length() - 3);
-                lowestPrice = rupee + paisa;
+            //Decimal Handling
+            if (lowestPrice.contains(".")) {
+                int indexOfDecimal = lowestPrice.indexOf('.');
+                String rupee = lowestPrice.substring(0, indexOfDecimal);
+                String paisa = lowestPrice.substring(indexOfDecimal + 1);
+                if (rupee.length() > 3 && rupee.length() <= 5) {
+                    rupee = rupee.substring(0, rupee.length() - 3) + "," + rupee.substring(rupee.length() - 3);
+                    lowestPrice = rupee + paisa;
+                }
             }
-        }
 
-        //Conversion of Double to , Formatted String
-        else if (lowestPrice.length() > 3 && lowestPrice.length() <= 5) {
-            lowestPrice = lowestPrice.substring(0, lowestPrice.length() - 3) + "," + lowestPrice.substring(lowestPrice.length() - 3);
+            //Conversion of Double to , Formatted String
+            else if (lowestPrice.length() > 3 && lowestPrice.length() <= 5) {
+                lowestPrice = lowestPrice.substring(0, lowestPrice.length() - 3) + "," + lowestPrice.substring(lowestPrice.length() - 3);
+            }
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebElement lowestPriceElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + lowestPrice + "']/preceding::a[1]")));
+            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+            lowestPriceElement.click();
+            CsvWriter output = new CsvWriter(new FileWriter(outputFile, true), ',');
+            output.write("TC_006,Select lowest Price Pen Drive,Pass");
+            output.endRecord();
+            output.close();
         }
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        WebElement lowestPriceElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + lowestPrice + "']/preceding::a[1]")));
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        lowestPriceElement.click();
-        CsvWriter output = new CsvWriter(new FileWriter(outputFile, true), ',');
-        output.write("TC_006,Select lowest Price Pen Drive,Pass");
-        output.endRecord();
-        output.close();
+        catch (java.lang.IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test(priority = 5)
