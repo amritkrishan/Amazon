@@ -27,7 +27,8 @@ public class AmazonTest {
     String testDataFile = testDataPath.toString();
     Path outputPath = Paths.get(System.getProperty("user.dir"), "output.csv");
     String outputFile = outputPath.toString();
-    public Dictionary<String, String> testDictionary=null;
+    public Dictionary<String, String> testDictionary=new Hashtable<String, String>();
+
 
     @BeforeClass
     public void openWebPageInBrowser() throws IOException {
@@ -202,9 +203,11 @@ public class AmazonTest {
     }
 
     public Dictionary<String, String> populateTestDictionary(String csvFile) throws Exception {
-        Dictionary<String, String> dict = null;
+        Dictionary<String, String> dict = new Hashtable<>();
         try {
             CsvReader csvReaderObj = new CsvReader(csvFile);
+            csvReaderObj.readHeaders();
+            while(csvReaderObj.readRecord()) {
                 for (int i = 1; i < csvReaderObj.getColumnCount() / 2 + 1; i++) {
                     String field = csvReaderObj.get("Field" + i).trim();
                     String value = csvReaderObj.get("Value" + i).trim();
@@ -212,6 +215,7 @@ public class AmazonTest {
                         dict.put(field, value);
                     }
                 }
+            }
         }
         catch(Exception e){
             e.printStackTrace();

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/com.amazon.iml" filepath="$PROJECT_DIR$/com.amazon.iml" />
-      <module fileurl="file://$PROJECT_DIR$/com.amazon.iml" filepath="$PROJECT_DIR$/com.amazon.iml" />
     </modules>
   </component>
 </project>
