@@ -113,8 +113,8 @@ public class AmazonTest {
     @Test(priority = 4)
     public void selectPendriveLowestPrice() throws IOException, InterruptedException {
         List<WebElement> allPrices = driver.findElements(By.xpath("//span[@class='a-size-base a-color-price s-price a-text-bold']"));
-        Thread.sleep(5000);
         try {
+            Thread.sleep(3000);
             LinkedList<Double> listPrices = new LinkedList<Double>();
             for (int i = 0; i < allPrices.size(); i++) {
                 try {

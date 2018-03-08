@@ -2,7 +2,6 @@
 "TC_002,Enter Search Text,Pass"
 "TC_003,Filter By Brand,Pass"
 "TC_004,Filter By Price,Pass"
-"TC_005,Filter By Avg Rating,Pass"
 "TC_006,Select lowest Price Pen Drive,Pass"
 "TC_007,Add to cart and validate login needed to checkout,Pass"
 "TC_008,Close Browser & driver instance,Pass"
